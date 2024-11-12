@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>縦書きエディタ原稿用紙版（LocalStrage使用）</title>
+
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }    
+    #memo {
+        width: 764px;
+        height: 610px;
+        padding-right: 2px;
+        border: 1px solid #ccc;
+        box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
+        font-size: 24px;
+        font-family: serif;         /*明朝体指定*/
+        line-height: 1.58em;
+        letter-spacing: 0.25em;
+        overflow-x: scroll;
+
+        writing-mode: vertical-rl;  /*デフォルトはhorizontal-tb（横書きで上から下方向）。vertical-rlは縦書きで右から下方向*/
+        -webkit-writing-mode: vertical-rl;
+        -ms-writing-mode: tb-rl;
+        text-orientation: upright;  /*半角英数字も縦書きに*/
+        cursor: vertical-text;      /*カーソルも縦書き仕様*/
+
+        border     : 2px solid #b35900;
+        background-color   : #ffffff;
+        background-image   : 
+            linear-gradient(to right,
+                         #ffffff,
+                         #ffffff     10%,
+                         #b35900     11%,
+                         #b35900     12%,
+                         transparent   13%,
+                         transparent   87%,
+                         #b35900     88%,
+                         #b35900     89%,
+                         #ffffff     90%,
+                         #ffffff),
+            linear-gradient(to bottom,
+                         transparent,
+                         transparent   97%,
+                         #b35900     98%,
+                         #b35900);
+        background-position: right 2px top;
+        background-size    : 38px 30px;
+    }
+    #menu {
+        margin: 1px;
+    }
+    .btn {
+        margin: 5px;
+        padding: 2px 3px;
+        text-decoration :none;
+        text-align: center;
+        transition: .4s;
+        box-shadow: 5px 5px 5px rgba(0,0,0,0.3);    /*--水平方向 垂直方向 影のぼかし 色--*/ 
+    }
+    .btn:hover {
+        box-shadow: 0 0 10px rgba(0,0,0,0);
+    }
+    </style>
+</head>
+
+
+<body>
+    <div id="memo" contenteditable="true" spellcheck="false" autofocus></div>    <!--contenteditableは、利用者にDOMの編集を許可することができる属性。メッチャ使える-->
+    <div id="menu">
+        <input type="button" value="保存" class="btn" onclick=save();></input><br>
+        <input type="button" value="読込" class="btn" onclick=load();></input>
+    </div>
+    
+    <script>
+        function load() {               // データ読込
+            let memoData = "";
+            if(!localStorage.getItem('memoData')) {
+                memoData = "メモは登録されていません。";
+            } else {
+                memoData = localStorage.getItem('memoData');
+            }
+            document.getElementById("memo").innerHTML = memoData;
+            console.log(memoData);
+        }
+
+        function save() {               //データ保存
+            let memoData = document.getElementById("memo").innerHTML;
+            localStorage.setItem('memoData', memoData);
+            console.log(memoData);
+        }
+    </script>
+
+</body>
+</html>
+
+
+
